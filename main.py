@@ -14,12 +14,14 @@ def main():
     START_DATE = '01/01/2020'
     END_DATE = '31/12/2020'
     
+    OPTIONS = webdriver.ChromeOptions()
+    OPTIONS.add_argument('--headless')
+    
     try:
-        DRIVER = webdriver.Chrome(PATH)
+        DRIVER = webdriver.Chrome(PATH, chrome_options=OPTIONS)
         DRIVER.get(URL)
         
     except:
-        OPTIONS = webdriver.ChromeOptions()
         OPTIONS.binary_location = 'D:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
         DRIVER = webdriver.Chrome(PATH, chrome_options=OPTIONS)
         DRIVER.get(URL)
@@ -30,12 +32,15 @@ def main():
     CLASS = DRIVER.find_element_by_id('classe_selectionText')
     CLASS.send_keys(CLASS_TERM)
     
-    FROM = DRIVER.find_element_by_id("iddadosConsulta.dtInicio")
+    FROM = DRIVER.find_element_by_id('iddadosConsulta.dtInicio')
     FROM.send_keys(START_DATE)
-    TO = DRIVER.find_element_by_id("iddadosConsulta.dtFim")
+    TO = DRIVER.find_element_by_id('iddadosConsulta.dtFim')
     TO.send_keys(END_DATE)
     
-    #DRIVER.quit()
+    CONSULT = DRIVER.find_element_by_id('pbSubmit')
+    CONSULT.click()
     
-if __name__ == "__main__":
+    DRIVER.quit()
+    
+if __name__ == '__main__':
     main()
