@@ -1,9 +1,27 @@
 import pandas as pd
 import requests
 from selenium import webdriver
-from tkinter import Tk
+from tkinter import Tk, ttk, StringVar
 from pathlib import Path
+from selenium.common.exceptions import WebDriverException
 from html.parser import HTMLParser
+
+def GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE):
+    window = Tk()
+    window.title('TJSP Webscrapper')
+    window.resizable(False, False)
+    window.eval('tk::PlaceWindow . center')
+    
+    URL=StringVar(URL)
+    SEARCH_TERM=StringVar(SEARCH_TERM)
+    CLASS_TERM=StringVar(CLASS_TERM)
+    START_DATE=StringVar(START_DATE)
+    END_DATE=StringVar(END_DATE)
+    
+    url_tk = ttk.Entry(justify = 'center', exportselection = 0)
+
+def process_PDF(text):
+    pass
 
 def main():
     CUR_DIR = Path(__file__).parent
@@ -16,6 +34,8 @@ def main():
     START_DATE = '01/01/2020'
     END_DATE = '31/12/2020'
     
+    #GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE)
+    
     OPTIONS = webdriver.ChromeOptions()
     OPTIONS.add_argument('--headless')
     
@@ -23,7 +43,7 @@ def main():
         DRIVER = webdriver.Chrome(PATH, chrome_options=OPTIONS)
         DRIVER.get(URL)
         
-    except:
+    except WebDriverException:
         OPTIONS.binary_location = 'D:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
         DRIVER = webdriver.Chrome(PATH, chrome_options=OPTIONS)
         DRIVER.get(URL)
