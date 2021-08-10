@@ -1,7 +1,9 @@
 import pandas as pd
+import requests
 from selenium import webdriver
 from tkinter import Tk
 from pathlib import Path
+from html.parser import HTMLParser
 
 def main():
     CUR_DIR = Path(__file__).parent
@@ -39,6 +41,11 @@ def main():
     
     CONSULT = DRIVER.find_element_by_id('pbSubmit')
     CONSULT.click()
+    
+    PARSEURL = DRIVER.current_url()
+    PARSE = requests.request('GET', PARSEURL)
+    
+    print(PARSE)
     
     DRIVER.quit()
     
