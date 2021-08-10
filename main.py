@@ -1,10 +1,13 @@
+import requests, time
 import pandas as pd
-import requests
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
 from tkinter import Tk, ttk, StringVar
 from pathlib import Path
-from selenium.common.exceptions import WebDriverException
-from html.parser import HTMLParser
+from bs4 import BeautifulSoup
 
 def GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE):
     window = Tk()
@@ -62,10 +65,11 @@ def main():
     CONSULT = DRIVER.find_element_by_id('pbSubmit')
     CONSULT.click()
     
-    PARSEURL = DRIVER.current_url()
-    PARSE = requests.request('GET', PARSEURL)
+    PARSEURL = DRIVER.current_url
+    PARSE = requests.request('GET', PARSEURL).text
+    SOUP = BeautifulSoup(PARSE)
     
-    print(PARSE)
+    CONTENT = SOUP('table')
     
     DRIVER.quit()
     
