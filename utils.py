@@ -22,6 +22,7 @@ def GUI(URL = 'https://esaj.tjsp.jus.br/cjpg/', SEARCH_TERM = 'covid', CLASS_TER
     
     CLASS_TERM_ENTRY = ttk.Entry(justify = 'center', exportselection = 0)
     CLASS_TERM_ENTRY.insert(-1, CLASS_TERM)
+    CLASS_TERM_ENTRY.configure(state='disabled')
     CLASS_TERM_LABEL = ttk.Label(text = 'Insira a classe:', justify = 'center')
     
     START_DATE_ENTRY = ttk.Entry(justify = 'center', exportselection = 0)
