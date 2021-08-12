@@ -1,14 +1,14 @@
-from tkinter import Tk, ttk, StringVar, messagebox, Entry
-from tkcalendar import Calendar, DateEntry
+from tkinter import Tk, ttk
+from tkcalendar import DateEntry
 from html.parser import HTMLParser
 
-def GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE):
+def GUI(URL = 'https://esaj.tjsp.jus.br/cjpg/', SEARCH_TERM = 'covid', CLASS_TERM = 'despejo', START_DATE = '01/01/2020', END_DATE = '31/12/2020', TIMEOUT = 10):
     window = Tk()
     window.title('TJSP Webscrapper')
     window.resizable(False, False)
     window.eval('tk::PlaceWindow . center')
     
-    URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT_FINAL = URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE, '10'
+    URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT_FINAL = URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE, TIMEOUT
     
     URL_ENTRY = ttk.Entry(justify = 'center', exportselection = 0)
     URL_ENTRY.insert(-1, URL)
@@ -45,7 +45,7 @@ def GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE):
         CLASS_TERM_FINAL = CLASS_TERM_ENTRY.get()
         START_DATE_FINAL = START_DATE_ENTRY.get()
         END_DATE_FINAL = END_DATE_ENTRY.get()
-        TIMEOUT_FINAL = TIMEOUT_ENTRY.get()
+        TIMEOUT_FINAL = int(TIMEOUT_ENTRY.get())
         
         window.destroy()
     
@@ -79,17 +79,12 @@ def process_PDF(text):
     pass
 
 class TJSPParser(HTMLParser):
-            def __init__(self):
-                super().__init__()
-                
-            def handle_starttag(self, TAG, ATTRS):
-                pass
+    def __init__(self):
+        super().__init__()
+        
+    def handle_starttag(self, TAG: str, ATTRS: list):
+        if TAG == 'tr':
+            pass
             
 if __name__ == '__main__':
-    URL = 'https://esaj.tjsp.jus.br/cjpg/'
-    SEARCH_TERM = 'covid'
-    CLASS_TERM = 'despejo'
-    START_DATE = '01/01/2020'
-    END_DATE = '31/12/2020'
-    
-    GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE)
+    GUI()

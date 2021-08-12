@@ -3,26 +3,20 @@ import pandas as pd
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException, TimeoutException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.ui import WebDriverWait
 from tkinter import Tk, messagebox
 from pathlib import Path
 from utils import *
+from urllib.parse import unquote_plus
+from bs4 import BeautifulSoup
 
 def main():
     CUR_DIR = Path(__file__).parent
     PROGRAM = 'chromedriver.exe'
     PATH = CUR_DIR / PROGRAM
     
-    URL = 'https://esaj.tjsp.jus.br/cjpg/'
-    SEARCH_TERM = 'covid'
-    CLASS_TERM = 'despejo'
-    START_DATE = '01/01/2020'
-    END_DATE = '31/12/2020'
-    
-    URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT = GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE)
-    
-    print(URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT)
+    URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT = GUI()
     
     OPTIONS = webdriver.ChromeOptions()
     OPTIONS.add_argument('--headless')
@@ -56,15 +50,20 @@ def main():
         
         with urllib.request.urlopen(urllib.request.Request(PARSEURL, headers={'User-Agent': 'Chrome'})) as HTML:
             PAGE = HTML.read()
+            
+        #PAGE = unquote_plus(str(PAGE))
+        
+        TREE = BeautifulSoup(PAGE)
+        HTML = TREE.prettify()
+        
+        print(HTML)
         
     except TimeoutException:
+        DRIVER.quit()
         root = Tk()
         root.withdraw()
         messagebox.showerror('Timeout', 'O site demorou demais para responder, tente novamente.')
         root.destroy()
-        
-    finally:
-        DRIVER.quit()
     
 if __name__ == '__main__':
     main()
