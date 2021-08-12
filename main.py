@@ -16,7 +16,7 @@ def main():
     PROGRAM = 'chromedriver.exe'
     PATH = CUR_DIR / PROGRAM
     
-    URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT = GUI()
+    URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT, querCSV, querXLSX = GUI()
     
     start_time = time.time()
     
@@ -96,12 +96,15 @@ def main():
                 row = {'Processo': DATA[0][i], 'Classe': DATA[1][i], 'Assunto': DATA[2][i], 'Magistrado': DATA[3][i], 'Comarca': DATA[4][i], 'Foro': DATA[5][i], 'Vara': DATA[6][i], 'Data de Disponibilização': DATA[7][i]}
                 df = df.append(row, ignore_index=True)
                 
-            df.to_csv('processos.csv')
+            if querCSV:
+                df.to_csv('processos.csv', encoding='latin1')
+            if querXLSX:
+                df.to_excel('processos.xlsx')
                 
             delta = round(time.time() - start_time, 3)
             root = Tk()
             root.withdraw()
-            messagebox.showinfo('Finalizado', f'Planilha gerada.\nO programa levou {delta}s para rodar.')
+            messagebox.showinfo('Finalizado', f'Planilha(s) gerada(s).\nO programa levou {delta}s para rodar.')
 
         
         except TimeoutException:

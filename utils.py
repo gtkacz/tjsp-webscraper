@@ -1,4 +1,4 @@
-from tkinter import Tk, ttk
+from tkinter import Tk, ttk, StringVar
 from tkcalendar import DateEntry
 from html.parser import HTMLParser
 import re, os
@@ -10,6 +10,7 @@ def GUI(URL = 'https://esaj.tjsp.jus.br/cjpg/', SEARCH_TERM = 'covid', CLASS_TER
     window.eval('tk::PlaceWindow . center')
     
     URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT_FINAL = URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE, TIMEOUT
+    querCSV, querXLSX = False, False
     
     URL_ENTRY = ttk.Entry(justify = 'center', exportselection = 0, cursor = 'arrow')
     URL_ENTRY.insert(-1, URL)
@@ -53,6 +54,20 @@ def GUI(URL = 'https://esaj.tjsp.jus.br/cjpg/', SEARCH_TERM = 'covid', CLASS_TER
     
     BUTTON = ttk.Button(text = 'Pesquisar', command = isClickedFunction)
     
+    def quercsvfunc():
+        nonlocal querCSV
+        querCSV = True
+        
+    def querxlsxfunc():
+        nonlocal querXLSX
+        querXLSX = True
+    
+    quercsv_var = StringVar(value=0)
+    querxlsx_var = StringVar(value=0)
+    
+    quercsv = ttk.Checkbutton(window, text='Salvar .csv', command=quercsvfunc, variable=quercsv_var)
+    querxlsx = ttk.Checkbutton(window, text='Salvar .xlsx', command=querxlsxfunc, variable=querxlsx_var)
+    
     URL_LABEL.grid(row=0, column=0, pady=10)
     URL_ENTRY.grid(row=1, column=0, padx=25)
     
@@ -73,9 +88,12 @@ def GUI(URL = 'https://esaj.tjsp.jus.br/cjpg/', SEARCH_TERM = 'covid', CLASS_TER
     
     BUTTON.grid(row=4, column=1, pady=15)
     
+    quercsv.grid(row=4, column=0, pady=15)
+    querxlsx.grid(row=4, column=2, pady=15)
+    
     window.mainloop()
     
-    return URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT_FINAL
+    return URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT_FINAL, querCSV, querXLSX
 
 def process_PDF(text):
     pass
