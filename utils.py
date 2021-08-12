@@ -1,4 +1,5 @@
 from tkinter import Tk, ttk, StringVar, messagebox, Entry
+from tkcalendar import Calendar, DateEntry
 from html.parser import HTMLParser
 
 def GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE):
@@ -6,6 +7,8 @@ def GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE):
     window.title('TJSP Webscrapper')
     window.resizable(False, False)
     window.eval('tk::PlaceWindow . center')
+    
+    URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT_FINAL = URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE, '10'
     
     URL_ENTRY = ttk.Entry(justify = 'center', exportselection = 0)
     URL_ENTRY.insert(-1, URL)
@@ -21,21 +24,31 @@ def GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE):
     CLASS_TERM_LABEL = ttk.Label(text = 'Insira a classe:', justify = 'center')
     
     START_DATE_ENTRY = ttk.Entry(justify = 'center', exportselection = 0)
+    #START_DATE_ENTRY = DateEntry()
     START_DATE_ENTRY.insert(-1, START_DATE)
     START_DATE_LABEL = ttk.Label(text = 'Insira a data inicial:', justify = 'center')
     
     END_DATE_ENTRY = ttk.Entry(justify = 'center', exportselection = 0)
+    #END_DATE_ENTRY = DateEntry()
     END_DATE_ENTRY.insert(-1, END_DATE)
     END_DATE_LABEL = ttk.Label(text = 'Insira a data final:', justify = 'center')
     
     TIMEOUT_ENTRY = ttk.Entry(justify = 'center', exportselection = 0)
     TIMEOUT_ENTRY.insert(-1, '10')
     TIMEOUT_LABEL = ttk.Label(text = 'Insira o tempo máximo de\nespera pelo servidor (s):', justify = 'center')
-    
+        
     def isClickedFunction():
-        global isClicked
-        isClicked = True
-           
+        nonlocal URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT_FINAL
+        
+        URL_FINAL = URL_ENTRY.get()
+        SEARCH_TERM_FINAL = SEARCH_TERM_ENTRY.get()
+        CLASS_TERM_FINAL = CLASS_TERM_ENTRY.get()
+        START_DATE_FINAL = START_DATE_ENTRY.get()
+        END_DATE_FINAL = END_DATE_ENTRY.get()
+        TIMEOUT_FINAL = TIMEOUT_ENTRY.get()
+        
+        window.destroy()
+    
     BUTTON = ttk.Button(text = 'Pesquisar', command = isClickedFunction)
     
     URL_LABEL.grid(row=0, column=0, pady=10)
@@ -58,20 +71,9 @@ def GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE):
     
     BUTTON.grid(row=4, column=1, pady=15)
     
-    isClicked = False
-    if isClicked:
-        URL_FINAL = URL_ENTRY.get()
-        SEARCH_TERM_FINAL = SEARCH_TERM_ENTRY.get()
-        CLASS_TERM_FINAL = CLASS_TERM_ENTRY.get()
-        START_DATE_FINAL = START_DATE_ENTRY.get()
-        END_DATE_FINAL = END_DATE_ENTRY.get()
-        TIMEOUT_FINAL = TIMEOUT_ENTRY.get()
-        
-        window.destroy()
-        
-        return URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT_FINAL
-    
     window.mainloop()
+    
+    return URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT_FINAL
 
 def process_PDF(text):
     pass
