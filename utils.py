@@ -1,6 +1,7 @@
 from tkinter import Tk, ttk
 from tkcalendar import DateEntry
 from html.parser import HTMLParser
+import re
 
 def GUI(URL = 'https://esaj.tjsp.jus.br/cjpg/', SEARCH_TERM = 'covid', CLASS_TERM = 'despejo', START_DATE = '01/01/2020', END_DATE = '31/12/2020', TIMEOUT = 10):
     window = Tk()
@@ -10,7 +11,7 @@ def GUI(URL = 'https://esaj.tjsp.jus.br/cjpg/', SEARCH_TERM = 'covid', CLASS_TER
     
     URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT_FINAL = URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE, TIMEOUT
     
-    URL_ENTRY = ttk.Entry(justify = 'center', exportselection = 0)
+    URL_ENTRY = ttk.Entry(justify = 'center', exportselection = 0, cursor = 'arrow')
     URL_ENTRY.insert(-1, URL)
     URL_ENTRY.configure(state='disabled')
     URL_LABEL = ttk.Label(text = 'Insira o URL:', justify = 'center')
@@ -86,5 +87,10 @@ class TJSPParser(HTMLParser):
         if TAG == 'tr':
             pass
             
+def tag_cleanup(html):
+    html = str(html)
+    cleanr = re.compile('<.*?>')
+    return re.sub(cleanr, '', html)
+
 if __name__ == '__main__':
     GUI()

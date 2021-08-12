@@ -53,10 +53,20 @@ def main():
             
         #PAGE = unquote_plus(str(PAGE))
         
-        TREE = BeautifulSoup(PAGE)
-        HTML = TREE.prettify()
+        TREE = BeautifulSoup(PAGE, 'lxml')
+        #HTML = TREE.prettify()
         
-        print(HTML)
+        DATA = []
+        
+        for TABLE in TREE.find_all('tr', class_ = 'fundocinza1'):
+            for LINE in TABLE.find_all('tr', class_ = 'fonte'):
+                for LINE2 in LINE.find_all('td', attrs = {'align': 'left'}):
+                    for PROCESS in LINE2.find_all('span', class_ = 'fonteNegrito'):
+                        #DATA[PROCESS] = []
+                        print(tag_cleanup(PROCESS))
+                        print('---------------------------------------------------------------------------------------')
+                    #print(LINE2.prettify())
+                    #print('---------------------------------------------------------------------------------------')
         
     except TimeoutException:
         DRIVER.quit()
