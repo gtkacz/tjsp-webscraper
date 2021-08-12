@@ -10,7 +10,7 @@ Feito como teste para o Centro de Regulação e Democracia do Insper
 - Tkinter
 
 <p align="center">
-  <img src="https://i.imgur.com/LlfD0rh.png" width="750" title="Interface do programa">
+  <img src="https://i.imgur.com/LlfD0rh.png" width="500" title="Interface do programa">
 </p>
 
 <!-- ![Interface do programa](https://i.imgur.com/LlfD0rh.png) -->
