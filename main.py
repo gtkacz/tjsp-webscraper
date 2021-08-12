@@ -28,6 +28,7 @@ def main():
         
     except WebDriverException:
         OPTIONS.binary_location = 'D:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+        OPTIONS.add_experimental_option('excludeSwitches', ['enable-logging'])
         DRIVER = webdriver.Chrome(PATH, options=OPTIONS)
         DRIVER.get(URL_FINAL)
     
@@ -39,23 +40,23 @@ def main():
     TO = DRIVER.find_element_by_id('iddadosConsulta.dtFim')
     TO.send_keys(END_DATE_FINAL)
     
+    CONSULT = DRIVER.find_element_by_id('pbSubmit')
+    
     #CLASS = DRIVER.find_element_by_id('classe_selectionText')
     CLASS_SEARCH = DRIVER.find_element_by_id('botaoProcurar_classe')
     CLASS_SEARCH.click()
     
-    CONSULT = DRIVER.find_element_by_id('pbSubmit')
-    
     try:
-        WebDriverWait(DRIVER, TIMEOUT).until(expected_conditions.presence_of_element_located((By.ID, 'classe_treeSelectContainer')))
+        WebDriverWait(DRIVER, TIMEOUT).until(expected_conditions.presence_of_element_located((By.CLASS_NAME, 'treeView')))
         
         CLASS_SEARCH_BAR = DRIVER.find_element_by_id('classe_treeSelectFilter')
         CLASS_SEARCH_BUTTON = DRIVER.find_element_by_id('filtroButton')
         CHECKBOX = DRIVER.find_element_by_id('classe_tree_node_8554')
-        CONFIRM = DRIVER.find_element_by_class_name('spwBotaoDefaultGrid')
         
         CLASS_SEARCH_BAR.send_keys(CLASS_TERM_FINAL)
         CLASS_SEARCH_BUTTON.click()
         CHECKBOX.click()
+        CONFIRM = DRIVER.find_element_by_xpath('//*[@id="classe_treeSelectContainer"]/div[3]/table/tbody/tr/td/input[1]')
         CONFIRM.click()
         CONSULT.click()
         
@@ -63,7 +64,7 @@ def main():
             WebDriverWait(DRIVER, TIMEOUT).until(expected_conditions.presence_of_element_located((By.ID, 'divDadosResultado')))
             PARSEURL = DRIVER.current_url
             
-            with urllib.request.urlopen(urllib.request.Request(PARSEURL, headers={'User-Agent': 'Chrome'})) as HTML:
+            with urllib.request.urlopen(urllib.request.Request(PARSEURL, headers = {'User-Agent': 'Chrome'})) as HTML:
                 PAGE = HTML.read()
                 
             #PAGE = unquote_plus(str(PAGE))
