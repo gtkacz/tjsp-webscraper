@@ -12,6 +12,8 @@ from urllib.parse import unquote_plus
 from bs4 import BeautifulSoup
 
 def main():
+    start_time = time.time()
+    
     CUR_DIR = Path(__file__).parent
     PROGRAM = 'chromedriver.exe'
     PATH = CUR_DIR / PROGRAM
@@ -19,8 +21,8 @@ def main():
     URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT = GUI()
     
     OPTIONS = webdriver.ChromeOptions()
-    #OPTIONS.add_argument('--headless')
-    OPTIONS.add_argument("--window-size=%s" % '1920,1080')
+    OPTIONS.add_argument('--headless')
+    OPTIONS.add_argument('--window-size=%s' % '1920,1080')
     
     try:
         DRIVER = webdriver.Chrome(PATH, options=OPTIONS)
@@ -67,6 +69,8 @@ def main():
             with urllib.request.urlopen(urllib.request.Request(PARSEURL, headers = {'User-Agent': 'Chrome'})) as HTML:
                 PAGE = HTML.read()
                 
+            DRIVER.quit()
+            
             #PAGE = unquote_plus(str(PAGE))
             
             TREE = BeautifulSoup(PAGE, 'lxml')
@@ -80,11 +84,18 @@ def main():
                         EXTRA.replaceWith('')
                     for LINE2 in LINE.find_all('td', attrs = {'align': 'left'}):
                         for PROCESS in LINE2.find_all('span', class_ = 'fonteNegrito'):
-                            DATA[0].append(tag_cleanup(PROCESS)[1:-1])
+                            DATA[0].append(tag_cleanup(PROCESS))
                         for CONTENT in LINE2.find_all('strong'):
                             CONTENT.replaceWith('')
                         print('---------------------------------------------------------------------------------------')
-                        print(LINE2.prettify())
+                        #print(tag_cleanup(LINE2.prettify()))
+                        print(tag_cleanup(LINE2)[1:])
+                        
+            delta = round(time.time() - start_time, 3)
+            root = Tk()
+            root.withdraw()
+            messagebox.showinfo('Finalizado', f'Planilha gerada.\nO programa levou {delta}s para rodar.')
+
         
         except TimeoutException:
             DRIVER.quit()

@@ -91,7 +91,8 @@ class TJSPParser(HTMLParser):
 def tag_cleanup(html):
     html = str(html)
     cleanr = re.compile('<.*?>')
-    return re.sub(cleanr, '', html)
+    #return re.sub(cleanr, '', html)
+    return (re.sub(cleanr, '', html))[1:-1]
 
 if __name__ == '__main__':
     GUI()
