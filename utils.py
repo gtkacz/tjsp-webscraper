@@ -1,7 +1,7 @@
 from tkinter import Tk, ttk
 from tkcalendar import DateEntry
 from html.parser import HTMLParser
-import re
+import re, os
 
 def GUI(URL = 'https://esaj.tjsp.jus.br/cjpg/', SEARCH_TERM = 'covid', CLASS_TERM = 'despejo', START_DATE = '01/01/2020', END_DATE = '31/12/2020', TIMEOUT = 10):
     window = Tk()
@@ -92,7 +92,10 @@ def tag_cleanup(html):
     html = str(html)
     cleanr = re.compile('<.*?>')
     #return re.sub(cleanr, '', html)
-    return (re.sub(cleanr, '', html))[1:-1]
+    string = (re.sub(cleanr, '', html))[1:-1]
+    string = string.replace('\n', '')
+    string = string.replace('\t', '')
+    return string
 
 if __name__ == '__main__':
     GUI()

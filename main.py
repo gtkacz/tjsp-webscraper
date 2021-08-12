@@ -12,13 +12,13 @@ from urllib.parse import unquote_plus
 from bs4 import BeautifulSoup
 
 def main():
-    start_time = time.time()
-    
     CUR_DIR = Path(__file__).parent
     PROGRAM = 'chromedriver.exe'
     PATH = CUR_DIR / PROGRAM
     
     URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT = GUI()
+    
+    start_time = time.time()
     
     OPTIONS = webdriver.ChromeOptions()
     OPTIONS.add_argument('--headless')
@@ -79,6 +79,7 @@ def main():
             DATA = [[], [], [], [], [], [], [], []]
             
             for TABLE in TREE.find_all('tr', class_ = 'fundocinza1'):
+                c=1
                 for LINE in TABLE.find_all('tr', class_ = 'fonte'):
                     for EXTRA in LINE.find_all('td', attrs = {'align': 'left', 'colspan': '2'}):
                         EXTRA.replaceWith('')
@@ -87,9 +88,8 @@ def main():
                             DATA[0].append(tag_cleanup(PROCESS))
                         for CONTENT in LINE2.find_all('strong'):
                             CONTENT.replaceWith('')
-                        print('---------------------------------------------------------------------------------------')
-                        #print(tag_cleanup(LINE2.prettify()))
-                        print(tag_cleanup(LINE2)[1:])
+                        DATA[c].append(tag_cleanup(LINE2)[1:])
+                        c+=1
                         
             delta = round(time.time() - start_time, 3)
             root = Tk()
