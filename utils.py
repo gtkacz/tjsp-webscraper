@@ -9,6 +9,7 @@ def GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE):
     
     URL_ENTRY = ttk.Entry(justify = 'center', exportselection = 0)
     URL_ENTRY.insert(-1, URL)
+    URL_ENTRY.configure(state='disabled')
     URL_LABEL = ttk.Label(text = 'Insira o URL:', justify = 'center')
     
     SEARCH_TERM_ENTRY = ttk.Entry(justify = 'center', exportselection = 0)
@@ -57,6 +58,7 @@ def GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE):
     
     BUTTON.grid(row=4, column=1, pady=15)
     
+    isClicked = False
     if isClicked:
         URL_FINAL = URL_ENTRY.get()
         SEARCH_TERM_FINAL = SEARCH_TERM_ENTRY.get()
