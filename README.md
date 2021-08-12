@@ -9,6 +9,8 @@ Feito como teste para o Centro de Regulação e Democracia do Insper
 - Pandas
 - Tkinter
 
-<p align="center">
+<!-- <p align="center">
   <img src="https://imgur.com/LlfD0rh" width="350" title="Interface do programa">
-</p>
+</p> -->
+
+![Interface do programa](https://imgur.com/LlfD0rh)
