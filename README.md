@@ -8,3 +8,5 @@ Feito como teste para o Centro de Regulação e Democracia do Insper
 - BeautifulSoup
 - Pandas
 - Tkinter
+
+<img src="http://prntscr.com/1nmoft2" alt="Imagem da interface do programa">
