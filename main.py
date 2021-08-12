@@ -82,15 +82,22 @@ def main():
                 c=1
                 for LINE in TABLE.find_all('tr', class_ = 'fonte'):
                     for EXTRA in LINE.find_all('td', attrs = {'align': 'left', 'colspan': '2'}):
+                        for PROCESS in LINE.find_all('span', class_ = 'fonteNegrito'):
+                            DATA[0].append(tag_cleanup(PROCESS))
                         EXTRA.replaceWith('')
                     for LINE2 in LINE.find_all('td', attrs = {'align': 'left'}):
-                        for PROCESS in LINE2.find_all('span', class_ = 'fonteNegrito'):
-                            DATA[0].append(tag_cleanup(PROCESS))
                         for CONTENT in LINE2.find_all('strong'):
                             CONTENT.replaceWith('')
                         DATA[c].append(tag_cleanup(LINE2)[1:])
                         c+=1
                         
+            df = pd.DataFrame()
+            for i in range(len(DATA[0])):
+                row = {'Processo': DATA[0][i], 'Classe': DATA[1][i], 'Assunto': DATA[2][i], 'Magistrado': DATA[3][i], 'Comarca': DATA[4][i], 'Foro': DATA[5][i], 'Vara': DATA[6][i], 'Data de Disponibilização': DATA[7][i]}
+                df = df.append(row, ignore_index=True)
+                
+            df.to_csv('processos.csv')
+                
             delta = round(time.time() - start_time, 3)
             root = Tk()
             root.withdraw()
