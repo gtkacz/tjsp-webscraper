@@ -20,36 +20,36 @@ def main():
     START_DATE = '01/01/2020'
     END_DATE = '31/12/2020'
     
-    #GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE)
+    URL_FINAL, SEARCH_TERM_FINAL, CLASS_TERM_FINAL, START_DATE_FINAL, END_DATE_FINAL, TIMEOUT = GUI(URL, SEARCH_TERM, CLASS_TERM, START_DATE, END_DATE)
     
     OPTIONS = webdriver.ChromeOptions()
     OPTIONS.add_argument('--headless')
     
     try:
         DRIVER = webdriver.Chrome(PATH, options=OPTIONS)
-        DRIVER.get(URL)
+        DRIVER.get(URL_FINAL)
         
     except WebDriverException:
         OPTIONS.binary_location = 'D:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
         DRIVER = webdriver.Chrome(PATH, options=OPTIONS)
-        DRIVER.get(URL)
+        DRIVER.get(URL_FINAL)
     
     SEARCHBAR = DRIVER.find_element_by_id('iddadosConsulta.pesquisaLivre')
-    SEARCHBAR.send_keys(SEARCH_TERM)
+    SEARCHBAR.send_keys(SEARCH_TERM_FINAL)
     
     CLASS = DRIVER.find_element_by_id('classe_selectionText')
-    CLASS.send_keys(CLASS_TERM)
+    CLASS.send_keys(CLASS_TERM_FINAL)
     
     FROM = DRIVER.find_element_by_id('iddadosConsulta.dtInicio')
-    FROM.send_keys(START_DATE)
+    FROM.send_keys(START_DATE_FINAL)
     TO = DRIVER.find_element_by_id('iddadosConsulta.dtFim')
-    TO.send_keys(END_DATE)
+    TO.send_keys(END_DATE_FINAL)
     
     CONSULT = DRIVER.find_element_by_id('pbSubmit')
     CONSULT.click()
     
     try:
-        TABLE = WebDriverWait(DRIVER, 10).until(expected_conditions.presence_of_element_located((By.ID, 'divDadosResultado')))
+        TABLE = WebDriverWait(DRIVER, TIMEOUT).until(expected_conditions.presence_of_element_located((By.ID, 'divDadosResultado')))
         PARSEURL = DRIVER.current_url
         
         with urllib.request.urlopen(urllib.request.Request(PARSEURL, headers={'User-Agent': 'Chrome'})) as HTML:
